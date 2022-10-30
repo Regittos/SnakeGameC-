@@ -49,8 +49,9 @@ label:
     comPos[1] = (rand() % 25) + 2;
     if (snakepos[0] == comPos[0] && snakepos[1] == comPos[1])
         goto label;
+    SetConsoleTextAttribute(console, 4);
     gotoxy(comPos[0], comPos[1]);
-    cout << "*";
+    cout << "O";
 }
 void scor()
 {
@@ -58,6 +59,7 @@ void scor()
     {
         score++;
         cPos();
+        SetConsoleTextAttribute(console, 10);
     }
     gotoxy(WIN_WIDTH + 2, 21);
     cout << " SCORE: " << score;
@@ -99,7 +101,7 @@ void telaInicial()
 }
 void gameover()
 {
-    SetConsoleTextAttribute(console, 4);//muda a cor corrente do texto no console
+    SetConsoleTextAttribute(console, 4); // muda a cor corrente do texto no console
     timer = 300;
     system("cls");
     gotoxy(15, 12);
@@ -115,7 +117,9 @@ void gameover()
     cout << "|    |  |    |  |  |  |   |         |    |    \\  /    |      |\\     ||";
     Sleep(timer);
     gotoxy(15, 16);
-    cout << "|____|  |    |  |  |  |   |____     |____|     \\/     |____  | \\    OO";
+    cout << "|____|  |    |  |  |  |   |____     |____|     \\/     |____  | \\    OO" << endl;
+    cout << "                                     SCORE: " << score;
+    cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
     Sleep(timer);
     exit(1);
 }
@@ -123,7 +127,6 @@ void play()
 {
     SetConsoleTextAttribute(console, 7);
     system("cls");
-    //system("Color 0A");
     telaInicial();
     system("cls");
     drawBorder();
@@ -149,21 +152,22 @@ void play()
     cout << " s Key - Down";
     gotoxy(WIN_WIDTH + 2, 21);
     cout << " SCORE: " << score;
-    gotoxy(snakepos[0], snakepos[1]);
-    cout << "O";
     cPos();
+    SetConsoleTextAttribute(console, 10);
+    gotoxy(snakepos[0], snakepos[1]);
+    cout << "A";
     char ch = 0, ca, d;
     while (1)
     {
-
         if (kbhit())
             ca = getch();
-        if (ca == 'a' || ca == 'A' || ca == 'd' || ca == 'D' || ca == 'w' || ca == 'W' ||
-            ca == 's' || ca == 'S' || ca == 27)
-            ch = ca;
+        if (ca == 'a' || ca == 'd' || ca == 'w' || ca == 's' || ca == 27)
+        {
+            if (!(ca == 'a' && ch == 'd') && !(ca == 'w' && ch == 's') && !(ca == 'd' && ch == 'a') && !(ca == 's' && ch == 'w'))
+                ch = ca;
+        }
         if (ch != 0)
         {
-
             for (i = 0; i < 30; i++)
             {
                 for (j = 0; j < 30; j++)
@@ -183,25 +187,25 @@ void play()
                 }
             }
         }
-        if (ch == 'a' || ch == 'A')
+        if (ch == 'a')
         {
             if (snakepos[0] >= 2)
                 snakepos[0]--;
             d = '<';
         }
-        else if (ch == 'd' || ch == 'D')
+        else if (ch == 'd')
         {
             if (snakepos[0] <= 28)
                 snakepos[0]++;
             d = '>';
         }
-        else if (ch == 'w' || ch == 'W')
+        else if (ch == 'w')
         {
             if (snakepos[1] >= 2)
                 snakepos[1]--;
             d = 'A';
         }
-        else if (ch == 's' || ch == 'S')
+        else if (ch == 's')
         {
             if (snakepos[1] <= 27)
                 snakepos[1]++;
@@ -209,12 +213,12 @@ void play()
         }
         else if (ch == 27)
             break;
-        SetConsoleTextAttribute(console, 10);
         gotoxy(snakepos[0], snakepos[1]);
         cout << d;
         if (snakepos[0] < 2 || snakepos[0] > 28 || snakepos[1] < 2 || snakepos[1] > 27)
             gameover();
         scor();
+
         Sleep(timer);
     }
 }
