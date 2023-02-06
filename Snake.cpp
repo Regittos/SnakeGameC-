@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <time.h>
 
+//GetKeyState
+
 #define SCREEN_WIDTH 70
 #define SCREEN_HEIGHT 30
 #define WIN_WIDTH 30
