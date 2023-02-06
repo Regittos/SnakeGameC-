@@ -159,7 +159,7 @@ void play()
     char ch = 0, ca, d;
     while (1)
     {
-        if (kbhit())
+        if (kbhit()) //verificar se há uma versão dessa função na windows.h
             ca = getch();
         if (ca == 'a' || ca == 'd' || ca == 'w' || ca == 's' || ca == 27)
         {
